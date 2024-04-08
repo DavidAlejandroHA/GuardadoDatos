@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
-     PlayerSettings settings;
+    PlayerSettings settings;
 
     string fichero;
     public static SaveManager Instance { get; private set; }
@@ -31,12 +31,16 @@ public class SaveManager : MonoBehaviour
     public  void GuardarJuego(bool bailecito, Color color)
     {
 
+        settings.color = color;
+        settings.bailecito = bailecito;
+        string jsonTexto = JsonUtility.ToJson(settings);
+        File.WriteAllText(fichero, jsonTexto);
         // Modificar los campos de la variable settings
 
         // Pasar la variable settings a Json con la funcion ToJson
 
         // Guardar dicho string con la función WriteAllText
- 
+
     }
 
     public PlayerSettings CargarJuego()
@@ -46,7 +50,8 @@ public class SaveManager : MonoBehaviour
             // Leer del fichero con la funcion ReadAllText
 
             // Modificar la variable settings con el método FromJson
-
+            string textoJson = File.ReadAllText(fichero);
+            settings = JsonUtility.FromJson<PlayerSettings>(textoJson);
         }
         return settings;
     }
